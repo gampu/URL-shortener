@@ -1,0 +1,25 @@
+{
+  "name": "URL_Shorterner",
+  "version": "1.0.0",
+  "description": "Test webapp",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "test",
+    "heroku"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "14.16.1"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1"
+  }
+}

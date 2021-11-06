@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+        <meta charset = "utf-8">
+        <meta name = "viewport" content = "width=device-width, initial-scale=1">
+        <title>Welcome</title>
+
+        <style type = "text/css">
+        </style>
+
+        <script type = "text/javascript">
+
+            function sendURLToServer( long_url )
+            {
+                xhr = new XMLHttpRequest();
+                xhr.onreadystatechange = function()
+                {
+                    if( this.readyState == 4 )
+                    {
+                        /* Show only if 200 is received */
+                        if( this.status == 200 )
+                        {
+                            var data = this.responseText;
+                            console.log( data );
+                            data = JSON.parse( data );
+                            var short_url_node = document.getElementById( "short_url" );
+                            short_url_node.href = "/" + data.short_url;
+                            short_url_node.text = "https://enigmatic-citadel-14082.herokuapp.com/" + data.short_url;
+                        }
+
+                        /* Handle error if not */
+                        else
+                        {
+                            alert( "Something went wrong. Please try again." );
+                        }
+                    }
+                }
+                xhr.open( "POST", "/post_long_url", true );
+                xhr.setRequestHeader( "Content-type", "application/json" );
+                xhr.send( JSON.stringify( { long_url } ) );
+            }
+
+            function init()
+            {
+                /* Setup action handler for url_form */
+                var form = document.getElementById( "url_form" );
+                form.onsubmit = function( e )
+                {
+                    e.preventDefault();
+                    var url = e.target.elements[ 0 ].value;
+                    console.log( url );
+
+                    /* Check whether URL length is between 1 and 2048(inclusive) */
+                    if( url.length == 0 )
+                    {
+                        alert( "You have entered nothing. Please input." );
+                    }
+                    else if( url.length > 2048 )
+                    {
+                        alert( "You have entered an URL of length more than 2048. Please enter a shorter one." );
+                    }
+                    else
+                    {
+                        sendURLToServer( url );
+                    }
+                }
+            }
+            window.addEventListener( "load", init, false );
+        </script>
+    </head>
+
+    <body>
+        <center>
+            <div>
+                <h1>URL Shortener</h1>
+                <p>Enter your long URL:
+                <form id = "url_form">
+                    <input type = "url" placeholder = "https://www.google.com">
+                    <br>
+                    <input type = "submit" value = "Submit">
+                </form>
+                </p>
+                <p>Your short URL is:
+                    <a id = "short_url">You will see the short url here.</a>
+                </p>
+            </div>
+        </center>
+    </body>
+</html>
